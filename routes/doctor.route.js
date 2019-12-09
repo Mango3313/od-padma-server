@@ -35,9 +35,9 @@ doctorExpressRoute.route('/').get(verificarToken, (req, res) => {
     } else {
         doctorSchema.find((error, data) => {
             if (error) {
-                return next(error)
+                res.status(500).json({ error: true, message: "TOKEN INVALIDO" });
             } else {
-                res.json(data)
+                res.status(200).json({ error: false, message: data });
             }
         })
     }
@@ -51,9 +51,9 @@ doctorExpressRoute.route('/registrar-doctor').post(verificarToken, (req, res, ne
     } else {
         doctorSchema.create(req.body, (error, data) => {
             if (error) {
-                return next(error)
+                res.status(500).json({ error: true, message: "TOKEN INVALIDO" });
             } else {
-                res.json(data)
+                res.status(200).json({ error: false, message: "Registrado con exito" });
             }
         })
     }

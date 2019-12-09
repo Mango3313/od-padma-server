@@ -1,6 +1,7 @@
 let express = require('express'),
     path = require('path'),
     mongoose = require('mongoose'),
+    morgan = require('morgan'),
     cors = require('cors'),
     bodyParser = require('body-parser'),
     dbConfig = require('./db/database');
@@ -22,6 +23,7 @@ mongoose.connect(dbConfig.db, {
 )
 // Setting up express
 const app = express();
+app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false

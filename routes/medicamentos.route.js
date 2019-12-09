@@ -104,6 +104,7 @@ medicamentosExpressRoute.route('/remove-meds/:id').delete(verificarToken, (req, 
     } else {
         medicamentosSchema.findByIdAndRemove(req.params.id, (error, data) => {
             if (error) {
+                console.log(error);
                 res.status(500).json({ error: true, message: "TOKEN INVALIDO" });
             } else {
                 res.status(200).json({ error: false, message: "Doctor eliminado exitosamente" });
