@@ -62,14 +62,21 @@ userExpressRoute.route('/obtener-user/:id').get((req, res) => {
 })
 */
 userExpressRoute.route('/login/').post((req, res) => {
-    userSchema.findOne({ 'nombre': req.body.nombre, 'password': req.body.password }, (error, data) => {
+    var dato = {nombre:req.body.nombre, password:req.body.password};
+    userSchema.findOne(dato, (error, data) => {
+        console.log(data);
         if (error) {
             res.status(500).json({ error: true, message: "Error" });
         } else {
-            jwt.sign({ data, exp: Math.floor(Date.now() / 1000) + (12 * 60 * 60) }, process.env.SECRET_KEY, (err, token) => {
-                //console.log(token)
-                res.status(200).json({ error: false, token })
-            })
+            if(data !== null && typeof data !== 'undefined' && data !==''){
+                
+                jwt.sign({ data, exp: Math.floor(Date.now() / 1000) + (12 * 60 * 60) }, process.env.SECRET_KEY, (err, token) => {
+                    //console.log(token)
+                    res.status(200).json({ error: false, token })
+                })
+            }else{
+                res.status(201).json({ error: true, message:"No existe el usuario o contrasenia" })
+            }
         }
     })
 })

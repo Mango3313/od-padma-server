@@ -61,15 +61,17 @@ peticionesExpressRoute.route('/registrar-peticion').post(verificarToken, (req, r
 
 
 // Get single user
-peticionesExpressRoute.route('/obtener-peticion/:id').get(verificarToken, (req, res) => {
+peticionesExpressRoute.route('/obtener-peticion/:nombre').get(verificarToken, (req, res) => {
     var tok = jwt.verify(req.token, process.env.SECRET_KEY)
     if (typeof tok === 'undefined') {
         res.status(403).json({ error: true, message: "Token expirado o invalido" })
     } else {
-        peticionesSchema.findById(req.params.id, (error, data) => {
+        peticionesSchema.findOne({nombreRealizador:req.params.nombre}, (error, data) => {
+            console.log(data)
             if (error) {
                 res.status(500).json({ error: true, message: "TOKEN INVALIDO" });
             } else {
+                console.log(data)
                 res.status(200).json({ error: false, message: data });
             }
         })

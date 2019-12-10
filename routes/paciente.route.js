@@ -61,16 +61,24 @@ pacienteExpressRoute.route('/registrar-paciente').post(verificarToken, (req, res
 
 
 // Get single user
-pacienteExpressRoute.route('/detalles-paciente/:id').get(verificarToken, (req, res) => {
+pacienteExpressRoute.route('/detalles-paciente/:nombre').get(verificarToken, (req, res) => {
     var tok = jwt.verify(req.token, process.env.SECRET_KEY)
     if (typeof tok === 'undefined') {
         res.status(403).json({ error: true, message: "Token expirado o invalido" })
     } else {
-        pacienteSchema.findById(req.params.id, (error, data) => {
+        pacienteSchema.findOne({nombre:req.params.nombre}, (error, data) => {
             if (error) {
                 res.status(500).json({ error: true, message: "TOKEN INVALIDO" });
             } else {
-                res.status(200).json({ error: false, message: data });
+                if(data !== null && typeof data !== 'undefined' && data !==''){
+                
+                
+                        //console.log(token)
+                        res.status(200).json({ error: false, message:data })
+                  
+                }else{
+                    res.status(201).json({ error: true, message:"No existe el usuario o contrasenia" })
+                }
             }
         })
     }
